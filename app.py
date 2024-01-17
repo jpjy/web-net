@@ -32,7 +32,7 @@ def execute_ping(host):
 
 @app.route('/ping', methods=['GET'])
 def ping():
-    host = request.args.get('host', '169.254.130.3')  # Default host to ping
+    host = request.args.get('host', '169.254.130.1')  # Default host to ping
     print(f"Received ping request for host: {host}")
     result = execute_ping(host)
     return jsonify({'ping_result': result})
