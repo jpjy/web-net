@@ -32,10 +32,12 @@ def execute_ping(host):
 
 @app.route('/ping', methods=['GET'])
 def ping():
-    host = request.args.get('host', '169.254.130.1')  # Default host to ping
-    print(f"Received ping request for host: {host}")
-    result = execute_ping(host)
-    return jsonify({'ping_result': result})
+    hosts = request.args.get('hosts', '169.254.130.1')  # Default hosts to ping
+    results = {}
+    for host in hosts.split(','):
+        print(f"Received ping request for host: {host}")
+        results[host] = execute_ping(host)
+    return jsonify(results)
 
 if __name__ == '__main__':
     print("Starting Flask app...")
