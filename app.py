@@ -39,6 +39,21 @@ def ping():
         results[host] = execute_ping(host)
     return jsonify(results)
 
+def execute_command(command):
+    try:
+        result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        return result.stdout.decode('utf-8').strip()
+    except subprocess.CalledProcessError as e:
+        return f"An error occurred: {e.stderr.decode('utf-8').strip()}"
+
+@app.route('/neigh', methods=['GET'])
+def get_network_info():
+    ip_neigh_output = execute_command("ip neigh")
+    return jsonify({
+        'ip_neigh': ip_neigh_output
+    })
+
+
 if __name__ == '__main__':
     print("Starting Flask app...")
     app.run(host='0.0.0.0', port=80)
