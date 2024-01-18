@@ -5,7 +5,7 @@ FROM python:3.9-slim
 WORKDIR /usr/src/app
 
 # Install iproute2 for 'ip addr' and 'ip neigh'
-RUN apt update && apt install -y iproute2 iputils-ping
+RUN apt update && apt install -y iproute2 iputils-ping nmap
 
 # Copy the current directory contents into the container at /usr/src/app
 COPY . .
