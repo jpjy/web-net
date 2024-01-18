@@ -41,6 +41,20 @@ def ping():
         results[host] = execute_ping(host)
     return jsonify(results)
 
+def run_nmap(host):
+    try:
+        nmap_output = subprocess.check_output(["nmap", "-sS", host], stderr=subprocess.STDOUT, universal_newlines=True)
+        return nmap_output
+    except subprocess.CalledProcessError as e:
+        return f"Nmap scan failed: {e.output}"
+
+@app.route('/nmap_scan', methods=['GET'])
+def nmap_scan():
+    host = request.args.get('host', '169.254.131.1')  # Default host to scan
+    result = run_nmap(host)
+    return jsonify({'nmap_scan_result': result})
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
 
